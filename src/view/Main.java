@@ -3,6 +3,7 @@ package view;
 import java.io.IOException;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import util.TerrainImage;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
@@ -20,8 +21,9 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 import javafx.stage.Stage;
 import model.Cell;
+import model.CellularAutomaton;
 import model.Direction;
-import model.ForestCellularAutomaton;
+import model.ForestCellularAutomaton2;
 
 public class Main extends Application {
 	
@@ -29,13 +31,13 @@ public class Main extends Application {
 	private static final int SCREEN_H = 600;
 	private static final Color BURN_COLOR = Color.valueOf("#030");
 	
-	private static final int W = 100;
-	private static final int H = 100;
+	private int W = 100;
+	private int H = 100;
 	private static final double SIZE_ADJUSTMENT = 0.5;
 	
-	private StackPane[][] matrix = new StackPane[H][W]; 
+	private StackPane[][] matrix;
 	private GridPane gridPane;
-	private ForestCellularAutomaton forest;
+	private CellularAutomaton forest;
 	private AtomicBoolean newState;
 
 	public static void main(String[] args) throws IOException {
@@ -45,6 +47,10 @@ public class Main extends Application {
 	  @Override
 	  public void start(Stage stage) throws Exception {
 	    stage.setTitle("Forest Fire Spreading Simulation");
+	    
+	    TerrainImage image = new TerrainImage("image2.png");
+//	    W = image.getWidth();
+//	    H = image.getHeight();
 
 	    initMainGridPane(W, H);
 
@@ -53,29 +59,20 @@ public class Main extends Application {
 	    stage.show();
 	    
 	    
-	    forest = new ForestCellularAutomaton(W, H);
-//	    int[][] points = new int[][]{
-//	    		{50, 50},
-//	    		{49, 50},
-//	    		{50, 49},
-//	    		{50, 51},
-//	    		{51, 50}
-//	    };
-//	    for (int[] point : points) {
-//	    	burnAll(point[0], point[1]);
-//	    	forest.setCell(point[0], point[1], 1);
+//	    forest = new ForestCellularAutomaton(W, H);
+//	    
+//	    int r = 3;
+//	    int c = 50;
+//	    for (int i =  c - 5; i <  c + 5; i++) {
+//	    	for (int j = c -5; j < c + 5; j++) {
+//	    		if (Math.sqrt((c - i)*(c - i) + (c - j)*(c - j)) < r*r) {
+//	    			burnAll(i, j);
+//	    	    	((ForestCellularAutomaton) forest).setCell(i, j, 1);
+//	    		}
+//	    	}
 //	    }
 	    
-	    int r = 3;
-	    int c = 50;
-	    for (int i =  c - 5; i <  c + 5; i++) {
-	    	for (int j = c -5; j < c + 5; j++) {
-	    		if (Math.sqrt((c - i)*(c - i) + (c - j)*(c - j)) < r*r) {
-	    			burnAll(i, j);
-	    	    	forest.setCell(i, j, 1);
-	    		}
-	    	}
-	    }
+	    forest = new ForestCellularAutomaton2(image);
 	    
 	    newState = new AtomicBoolean(false);
 
@@ -85,8 +82,12 @@ public class Main extends Application {
 		    	while (newState.get()) {
 		    		Thread.yield();
 		    	}
-		    	forest.next();
-		    	newState.set(true);
+		    	System.out.println("Next!");
+		    	newState.set(forest.next());
+		    	if (!newState.get()) {
+		    		System.out.println("Finished");
+		    		break;
+		    	}
 		    }
 	    }).start();
 	    
@@ -126,8 +127,9 @@ public class Main extends Application {
 
 	  private GridPane initMainGridPane(int W, int H) {
 	    gridPane = new GridPane();
-        for (int row = 0; row < W; row++) {
-            for (int col = 0; col < H; col ++) {
+	    matrix = new StackPane[H][W];
+        for (int row = 0; row < H; row++) {
+            for (int col = 0; col < W; col ++) {
                 StackPane square = new StackPane();
                 square.setAlignment(Pos.TOP_LEFT);
                 square.setStyle("-fx-border-color: black");

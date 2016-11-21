@@ -3,10 +3,10 @@ package model;
 import java.util.Random;
 
 
-public class ForestCellularAutomaton {
+public class ForestCellularAutomaton implements CellularAutomaton {
 
 	private static final double COEF = 2 * (Math.sqrt(2) - 1);
-	private static final double M = -0.8;
+	private static final double M = -0.6;
 	private static final double B = 1;
 	
 	private double[][] S;
@@ -46,7 +46,7 @@ public class ForestCellularAutomaton {
 		}
 	}
 	
-	public void next() {
+	public boolean next() {
 		double[][] newS = new double[S.length][S[0].length];
 		for (int i = 0; i < S.length; i++) {
 			for (int j = 0; j < S[0].length; j++) {
@@ -64,6 +64,7 @@ public class ForestCellularAutomaton {
 			}
 		}
 		S = newS;
+		return true;
 	}
 
 	private double getNeigh(int i, int j, int offI, int offJ) {

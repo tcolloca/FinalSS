@@ -6,6 +6,7 @@ import java.util.Random;
 
 import util.TerrainImage;
 
+// 
 public class ForestCellularAutomaton2 implements CellularAutomaton {
 	
 	private static final Random rand = new Random();

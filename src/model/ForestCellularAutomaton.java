@@ -2,7 +2,7 @@ package model;
 
 import java.util.Random;
 
-
+// https://s3.amazonaws.com/academia.edu.documents/30249270/m283xl03.pdf?AWSAccessKeyId=AKIAIWOWYYGZ2Y53UL3A&Expires=1524519591&Signature=RmPkt8fA%2FKBKVDXDHP3yPx%2By8W8%3D&response-content-disposition=inline%3B%20filename%3DA_model_for_predicting_forest_fire_sprea.pdf
 public class ForestCellularAutomaton implements CellularAutomaton {
 
 	private static final double COEF = 2 * (Math.sqrt(2) - 1);

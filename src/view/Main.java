@@ -3,7 +3,6 @@ package view;
 import java.io.IOException;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import util.TerrainImage;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
@@ -23,8 +22,12 @@ import javafx.stage.Stage;
 import model.Cell;
 import model.CellularAutomaton;
 import model.Direction;
+import model.ForestCellularAutomaton;
 import model.ForestCellularAutomaton2;
+import util.TerrainImage;
 
+// https://ac.els-cdn.com/S0307904X06000916/1-s2.0-S0307904X06000916-main.pdf?_tid=2d6fc7cc-4eaa-4c4d-ba2c-393487740882&acdnat=1524516167_8b8c923540b01c5a66ae668c7042eba1
+// http://iopscience.iop.org/article/10.1088/1742-6596/285/1/012038/pdf
 public class Main extends Application {
 	
 	private static final int SCREEN_W = 600;
@@ -49,8 +52,8 @@ public class Main extends Application {
 	    stage.setTitle("Forest Fire Spreading Simulation");
 	    
 	    TerrainImage image = new TerrainImage("image2.png");
-//	    W = image.getWidth();
-//	    H = image.getHeight();
+	    W = image.getWidth();
+	    H = image.getHeight();
 
 	    initMainGridPane(W, H);
 
@@ -59,18 +62,18 @@ public class Main extends Application {
 	    stage.show();
 	    
 	    
-//	    forest = new ForestCellularAutomaton(W, H);
-//	    
-//	    int r = 3;
-//	    int c = 50;
-//	    for (int i =  c - 5; i <  c + 5; i++) {
-//	    	for (int j = c -5; j < c + 5; j++) {
-//	    		if (Math.sqrt((c - i)*(c - i) + (c - j)*(c - j)) < r*r) {
-//	    			burnAll(i, j);
-//	    	    	((ForestCellularAutomaton) forest).setCell(i, j, 1);
-//	    		}
-//	    	}
-//	    }
+	    forest = new ForestCellularAutomaton(W, H);
+	    
+	    int r = 3;
+	    int c = 50;
+	    for (int i =  c - 5; i <  c + 5; i++) {
+	    	for (int j = c -5; j < c + 5; j++) {
+	    		if (Math.sqrt((c - i)*(c - i) + (c - j)*(c - j)) < r*r) {
+	    			burnAll(i, j);
+	    	    	((ForestCellularAutomaton) forest).setCell(i, j, 1);
+	    		}
+	    	}
+	    }
 	    
 	    forest = new ForestCellularAutomaton2(image);
 	    

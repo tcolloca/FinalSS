@@ -1,3 +1,7 @@
 /target/
 output*/*
 bin/
+maps/*
+*.xlsx
+.settings/*
+
